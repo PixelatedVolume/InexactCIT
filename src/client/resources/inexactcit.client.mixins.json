@@ -1,0 +1,6 @@
+{ "required": true
+, "package": "io.github.pixelatedvolume.inexactcit.mixin"
+, "compatibilityLevel": "JAVA_21"
+, "client": [ "ItemModelsMixin" ]
+, "injectors": { "defaultRequire": 1 }
+}
