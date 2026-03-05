@@ -132,4 +132,4 @@ lines of multiline compontents.
 To give one item multiple replacement rules that use different components
 (e.g. one set of rules for `lore` and one set for `custom_name`), set the
 fallback model to a new Match client item model that selects the second
-component.  This is untested.
+component.
