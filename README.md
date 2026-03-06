@@ -1,16 +1,16 @@
 INEXACT CIT
 ===========
-Restoring pattern-based conditional item textures.
+Restoring pattern-based conditional item models.
 
 
 Purpose
 -------
 The Custom Item Textures (CIT) mod, originally part of McPatcher and then
-Optifine, allowed the replacement of textures whose metadata matched inexact
-patterns.  We now have near-equivalent item-texture replacement in standard
-Minecraft with conditional client item types, though inexact matching is no
-longer possible.  This mod adds CIT replacement with regular expressions to
-the new standard conditional client item system.
+Optifine, allowed the replacement of item textures (and models) whose
+metadata matched inexact patterns.  We now have near-equivalent item-texture
+replacement in standard Minecraft with conditional client item types, though
+inexact matching is no longer possible.  This mod adds CIT replacement with
+regular expressions to the new standard conditional item definition system.
 
 
 Status
@@ -34,8 +34,8 @@ Add the mod JAR to your Fabric mods folder.
 
 Usage (Players)
 ---------------
-This mod adds a feature to item models which can be used by resource pack
-designers.  It is always active when the mod is installed.
+This mod adds a feature to item model definitions which can be used by
+resource pack designers.  It is always active when the mod is installed.
 
 
 Resource Pack Integration (Pack Authors)
@@ -95,7 +95,7 @@ The "fallback" field gives a model that is used when none of the "case"
 objects match, same as the standard Select.
 
 #### Example
-The following is an example of a Match client item model.  It replaces all
+The following is an example of a Match item definition.  It replaces all
 wooden hoes whose names include the word "Quarterstaff" with the model at
 `pixelatedvolume:item/quarterstaff`.
 
@@ -120,16 +120,16 @@ wooden hoes whose names include the word "Quarterstaff" with the model at
         }
 
 #### Text Comparison
-The contents of the field being matched against is serialized with `toString`.
+The contents of the field being examined is serialized with `toString`.
 Text-component (JSON) features, section-code formatting, etc, is all pushed
 into this comparison string, so there is no way of telling what might come
-before or after the text that is displayed in-game, or what happens between
+before or after the text that is visible in-game, or what happens between
 lines of multiline compontents.
 
 #### Regular Expression or Model Errors
-An item definition file with a malformed regular expression will not be read
-in properly and the item will appear with the default model (margenta-and-
-black cube)
+An item definition file with a malformed regular expression cannot be read
+so the item will appear with the default model (margenta-and-black cube).
+The failure (with the faulty file) is logged as an Error at pack-load time.
 
 #### Multiple Target Components
 To give one item multiple replacement rules that use different components
