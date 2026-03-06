@@ -30,9 +30,10 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.ItemOwner;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.entity.LivingEntity;
 
 
 /**
@@ -71,7 +72,7 @@ public class MatchItemModel<T> implements ItemModel {
      * @param   resolver        Needed to get the test predicate
      * @param   displayContext  Needed to get the test predicate
      * @param   level           Needed to get the test predicate
-     * @param   entity          Needed to get the test predicate
+     * @param   owner           Needed to get the test predicate
      * @param   i               Unknown
      */
     @Override
@@ -80,13 +81,14 @@ public class MatchItemModel<T> implements ItemModel {
                        ItemModelResolver      resolver,
                        ItemDisplayContext     displayContext,
                        @Nullable ClientLevel  level,
-                       @Nullable LivingEntity entity,
+                       @Nullable ItemOwner    owner,
                        int                    i)
     {
         ItemModel model = this.fallback;
+        LivingEntity ownerAsLE = owner == null? null : owner.asLivingEntity();
         T value = this.property.get(items,
                                     level,
-                                    entity,
+                                    ownerAsLE,
                                     i,
                                     displayContext);
         if (value != null) {
@@ -104,7 +106,7 @@ public class MatchItemModel<T> implements ItemModel {
                      resolver,
                      displayContext,
                      level,
-                     entity,
+                     owner,
                      i);
     }
 
