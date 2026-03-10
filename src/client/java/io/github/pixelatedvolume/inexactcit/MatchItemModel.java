@@ -29,12 +29,16 @@ import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentSerialization;
+//? if >1.21.10 {
+/*import net.minecraft.resources.Identifier;
+*///?} else {
 import net.minecraft.resources.ResourceLocation;
+//?}
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 //? if >1.21.8 {
 /*import net.minecraft.world.entity.ItemOwner;
- *///?} else {
+*///?} else {
 import net.minecraft.world.entity.LivingEntity;
 //?}
 
@@ -130,9 +134,15 @@ public class MatchItemModel<T> implements ItemModel {
     public static class Unbaked implements ItemModel.Unbaked {
         
         /* Name used in the "type" field to identify a MatchItemModel */
+        //? if >1.21.10 {
+        /*public static final Identifier TYPE_ID =
+            Identifier.fromNamespaceAndPath(InexactCITMod.MOD_ID,
+                                            "match");
+        *///?} else {
         public static final ResourceLocation TYPE_ID =
             ResourceLocation.fromNamespaceAndPath(InexactCITMod.MOD_ID,
                                                   "match");
+        //?}
 
         private final UnbakedSwitch<?> unbakedSwitch;
         private final Optional<ItemModel.Unbaked> fallback;
