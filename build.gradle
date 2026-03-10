@@ -1,15 +1,18 @@
 plugins {
     id('fabric-loom') version("${loom_version}")
-    id('maven-publish')
     id('dev.kikugie.stonecutter')
+    id('com.modrinth.minotaur') version('2.+')
 }
 
-def base_name   = project.archives_base_name
-def version     = project.mod_version
-def mc_versions = project.compatible_mc_versions
+def base_name          = project.archives_base_name
+def mod_version            = project.mod_version
+def mc_versions        = project.compatible_mc_versions
+def target_mc_version  = project.target_mc_version
+def loader_version     = project.loader_version
+def fabric_api_version = project.fabric_version
 
 base {
-    archivesName = "${archives_base_name}-${version}_${mc_versions}-fabric"
+    archivesName = "${archives_base_name}-${mod_version}_${mc_versions}-fabric"
 }
 
 loom {
@@ -22,22 +25,18 @@ loom {
     }
 }
 
-def target_mc_version  = project.target_mc_version
-def loader_version     = project.loader_version
-def fabric_api_version = project.fabric_version
-
 dependencies {
     implementation('javax.annotation:javax.annotation-api:1.3.2')
     minecraft("com.mojang:minecraft:${target_mc_version}")
     mappings(loom.officialMojangMappings())
-    modImplementation("net.fabricmc:fabric-loader:${project.loader_version}")
+    modImplementation("net.fabricmc:fabric-loader:${loader_version}")
     modImplementation("net.fabricmc.fabric-api:fabric-api:${fabric_api_version}")
 }
 
 processResources {
     filesMatching("fabric.mod.json") {
         expand(
-            "version": version,
+            "version": mod_version,
             "target_mc_version": target_mc_version,
             "compatible_mc_versions": compatible_mc_versions
         )
@@ -66,4 +65,14 @@ jar {
     from("LICENSE") {
         rename { "${it}_${inputs.properties.archivesName}" }
     }
+}
+
+modrinth {
+    projectId = 'inexactcit'
+    version = "${mod_version}-test"
+    versionName = "InexactCIT v${mod_version} for ${compatible_mc_versions} Fabric"
+    changelog = rootProject.file('CHANGES.md').with { exists() ? text : null }
+    uploadFile = remapJar
+    additionalFiles = [ sourcesJar ]
+    syncBodyFrom = rootProject.file('README.md').text
 }
