@@ -32,7 +32,11 @@ import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
+//? if >1.21.8 {
+/*import net.minecraft.world.entity.ItemOwner;
+ *///?} else {
 import net.minecraft.world.entity.LivingEntity;
+//?}
 
 
 /**
@@ -80,15 +84,24 @@ public class MatchItemModel<T> implements ItemModel {
                        ItemModelResolver      resolver,
                        ItemDisplayContext     displayContext,
                        @Nullable ClientLevel  level,
-                       @Nullable LivingEntity entity,
+                       //? if >1.21.8 {
+                       /*@Nullable ItemOwner    owner,
+                       *///?} else {
+                       @Nullable LivingEntity owner,
+                       //?}
                        int                    i)
     {
         ItemModel model = this.fallback;
-        T value = this.property.get(items,
-                                    level,
-                                    entity,
-                                    i,
-                                    displayContext);
+        T value =
+            this.property.get(items,
+                              level,
+                              //? if >1.21.8 {
+                              /*owner == null? null : owner.asLivingEntity(),
+                              *///?} else {
+                              owner,
+                              //?}
+                              i,
+                              displayContext);
         if (value != null) {
             /* This may eventually need a more sophisticated test */
             String testValue = value.toString();
@@ -104,7 +117,7 @@ public class MatchItemModel<T> implements ItemModel {
                      resolver,
                      displayContext,
                      level,
-                     entity,
+                     owner,
                      i);
     }
 

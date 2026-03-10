@@ -34,3 +34,6 @@ replay_*.log
 
 # emacs
 *~
+
+# stonecutter
+tokens.gradle

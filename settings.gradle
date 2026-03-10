@@ -1,10 +1,25 @@
 pluginManagement {
     repositories {
         maven {
-       	    name = 'Fabric'
-       	    url = 'https://maven.fabricmc.net/'
+            name = 'Fabric'
+            url = 'https://maven.fabricmc.net/'
         }
-    mavenCentral()
-    gradlePluginPortal()
+        maven {
+            name 'KikuGie Snapshots'
+            url = 'https://maven.kikugie.dev/snapshots'
+        }
+        gradlePluginPortal()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+
+plugins {
+    id('dev.kikugie.stonecutter') version '0.8.3'
+}
+
+stonecutter {
+    create(rootProject) {
+        versions('1.21.8', '1.21.9')
     }
 }

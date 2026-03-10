@@ -1,7 +1,10 @@
 plugins {
     id 'fabric-loom' version "${loom_version}"
     id 'maven-publish'
+    id 'dev.kikugie.stonecutter'
 }
+
+apply plugin: 'dev.kikugie.stonecutter'
 
 def base_name   = project.archives_base_name
 def version     = project.mod_version
