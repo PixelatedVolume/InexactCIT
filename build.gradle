@@ -3,16 +3,13 @@ plugins {
     id 'maven-publish'
 }
 
-version = project.mod_version
-target_mc_version = project.target_mc_version
-compatible_mc_versions = project.compatible_mc_versions
-group = project.maven_group
+def base_name   = project.archives_base_name
+def version     = project.mod_version
+def mc_versions = project.compatible_mc_versions
 
 base {
-    archivesName = project.archives_base_name
+    archivesName = "${archives_base_name}-${version}_${mc_versions}-fabric"
 }
-
-repositories {}
 
 loom {
     splitEnvironmentSourceSets()
@@ -26,18 +23,16 @@ loom {
 
 dependencies {
     implementation 'javax.annotation:javax.annotation-api:1.3.2'
-    minecraft "com.mojang:minecraft:${target_mc_version}"
+    minecraft "com.mojang:minecraft:${project.target_mc_version}"
     mappings loom.officialMojangMappings()
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 }
 
 processResources {
-    inputs.property "version", project.version
-
     filesMatching("fabric.mod.json") {
         expand(
-            "version": project.version,
+            "version": version,
             "target_mc_version": project.target_mc_version,
             "compatible_mc_versions": project.compatible_mc_versions
         )
@@ -65,16 +60,5 @@ jar {
 
     from("LICENSE") {
         rename { "${it}_${inputs.properties.archivesName}" }
-    }
-}
-
-publishing {
-    publications {
-        create("mavenJava", MavenPublication) {
-            artifactId = project.archives_base_name
-            from components.java
-        }
-    }
-    repositories {
     }
 }
