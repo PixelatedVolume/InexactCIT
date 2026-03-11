@@ -2,6 +2,7 @@ plugins {
     id('fabric-loom') version("${loom_version}")
     id('dev.kikugie.stonecutter')
     id('com.modrinth.minotaur') version('2.+')
+    id('com.github.breadmoirai.github-release') version('2.4.1')
 }
 
 def base_name          = project.archives_base_name
@@ -82,4 +83,18 @@ modrinth {
     uploadFile = remapJar
     additionalFiles = [ sourcesJar ]
     syncBodyFrom = rootProject.file('README.md').text
+}
+
+tasks.githubRelease.dependsOn(tasks.build)
+githubRelease {
+    token = System.getenv('GITHUB_TOKEN')
+    owner = "PixelatedVolume"
+    targetCommitish = "master"
+    repo = "InexactCIT"
+    tagName = "v${mod_version}"
+    releaseName = releaseTitle
+    body = changeText
+    releaseAssets = fileTree('build/libs')
+    draft = false
+    allowUploadToExisting = true
 }
