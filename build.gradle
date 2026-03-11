@@ -5,14 +5,16 @@ plugins {
 }
 
 def base_name          = project.archives_base_name
-def mod_version            = project.mod_version
+def mod_version        = project.mod_version
 def mc_versions        = project.compatible_mc_versions
 def target_mc_version  = project.target_mc_version
 def loader_version     = project.loader_version
 def fabric_api_version = project.fabric_version
 
+group = project.maven_group
+
 base {
-    archivesName = "${archives_base_name}-${mod_version}_${mc_versions}-fabric"
+    archivesName = "${base_name}-${mod_version}_${mc_versions}-fabric"
 }
 
 loom {
@@ -38,7 +40,7 @@ processResources {
         expand(
             "version": mod_version,
             "target_mc_version": target_mc_version,
-            "compatible_mc_versions": compatible_mc_versions
+            "compatible_mc_versions": mc_versions
         )
     }
 }
@@ -54,24 +56,29 @@ java {
 }
 
 sourcesJar {
+    inputs.property("archivesName", project.base.archivesName)
+    from(rootProject.file("LICENSE")) {
+        rename { "${it}_${inputs.properties.archivesName}" }
+    }
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
-    from sourceSets.main.allJava
-    from processResources.outputs
+    from(sourceSets.main.allJava)
+    from(processResources.outputs)
 }
 
 jar {
-    inputs.property "archivesName", project.base.archivesName
-
-    from("LICENSE") {
+    inputs.property("archivesName", project.base.archivesName)
+    from(rootProject.file("LICENSE")) {
         rename { "${it}_${inputs.properties.archivesName}" }
     }
 }
 
+def releaseTitle = "InexactCIT v${mod_version}"
+def changeText = rootProject.file('CHANGES.md').with { exists() ? text : "" }
 modrinth {
     projectId = 'inexactcit'
-    version = "${mod_version}-test"
-    versionName = "InexactCIT v${mod_version} for ${compatible_mc_versions} Fabric"
-    changelog = rootProject.file('CHANGES.md').with { exists() ? text : null }
+    versionNumber   = mod_version
+    versionName = "${releaseTitle} for ${mc_versions} Fabric"
+    changelog = changeText
     uploadFile = remapJar
     additionalFiles = [ sourcesJar ]
     syncBodyFrom = rootProject.file('README.md').text
