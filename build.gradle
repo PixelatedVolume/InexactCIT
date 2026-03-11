@@ -76,6 +76,7 @@ jar {
 def releaseTitle = "InexactCIT v${mod_version}"
 def changeText = rootProject.file('CHANGES.md').with { exists() ? text : "" }
 modrinth {
+    token = MODRINTH_TOKEN
     projectId = 'inexactcit'
     versionNumber   = mod_version
     versionName = "${releaseTitle} for ${mc_versions} Fabric"
@@ -87,7 +88,7 @@ modrinth {
 
 tasks.githubRelease.dependsOn(tasks.build)
 githubRelease {
-    token = System.getenv('GITHUB_TOKEN')
+    token = GITHUB_TOKEN
     owner = "PixelatedVolume"
     targetCommitish = "master"
     repo = "InexactCIT"
