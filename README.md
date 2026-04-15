@@ -13,12 +13,6 @@ inexact matching is no longer possible.  This mod adds CIT replacement with
 regular expressions to the new standard conditional item definition system.
 
 
-Status
-------
-This mod is not yet finished.  Core functionality works, but behavior outside
-of the documented `minecraft:component` use case has not been tested.
-
-
 Compatibility and Dependencies
 ------------------------------
 - Minecraft: 1.21.8
@@ -136,3 +130,10 @@ To give one item multiple replacement rules that use different components
 (e.g. one set of rules for `lore` and one set for `custom_name`), set the
 fallback model to a new Match client item model that selects the second
 component.
+
+
+Status
+------
+The ability to match properties other than `minecraft:component` will be added
+eventually.  Currently, such matches are accepted without error, but they have
+no effect.
