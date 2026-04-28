@@ -15,7 +15,7 @@ regular expressions to the new standard conditional item definition system.
 
 Compatibility and Dependencies
 ------------------------------
-- Minecraft: 1.21.8
+- Minecraft: 1.21.8--1.21.11
 - Loader: Fabric 0.136.1
 
 Fabric API not required.
@@ -55,12 +55,12 @@ Match item definition models use the same fields as Select, particularly
 "property", "component", "cases", and "fallback".
 
 #### Labeled Field Structure
-        { "model":
-          { "type": "inexactcit:match"
+        { "model"
+        : { "type": "inexactcit:match"
           , "property":  ...     # Probably always minecraft:component
           , "component": ...     # Name of component to target
-          , "cases":
-            [ { "regex": ...     # Regular expression for this case
+          , "cases"
+          : [ { "regex": ...     # Regular expression for this case
               , "model": { ... } # Item def'n. model used when regexp matches
               }
             , ...                # Another case, as above
@@ -72,8 +72,9 @@ Match item definition models use the same fields as Select, particularly
 
 #### Required Fields
 Regular expression matching is intended for text metadata, so the "property"
-field will be `minecraft:component`.  Behavior when "property" is not
-`minecraft:component` is as yet untested.
+field will be `minecraft:component`.  Currently, the mod does nothing when
+"property" is not `minecraft:component`; this will be changed when I figure
+out what I want regexp matching on non-text fields to mean.
 
 The "component" field should be set to the namespaced ID for the component
 that will be tested by the condition, e.g. `minecraft:lore`,
@@ -93,20 +94,20 @@ The following is an example of a Match item definition.  It replaces all
 wooden hoes whose names include the word "Quarterstaff" with the model at
 `pixelatedvolume:item/quarterstaff`.
 
-        { "model":
-          { "type": "inexactcit:match"
+        { "model"
+        : { "type": "inexactcit:match"
           , "property": "minecraft:component"
           , "component": "minecraft:custom_name"
-          , "cases":
-            [ { "model":
+          , "cases"
+          : [ { "model":
                 { "model": "pixelatedvolume:item/quarterstaff"
                 , "type": "minecraft:model"
                 }
               , "regex": ".*Quarterstaff.*"
               }
             ]
-          , "fallback":
-            { "model": "minecraft:item/wooden_hoe"
+          , "fallback"
+          : { "model": "minecraft:item/wooden_hoe"
             , "type": "minecraft:model"
             }
           }
